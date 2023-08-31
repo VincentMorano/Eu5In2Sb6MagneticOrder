@@ -1,6 +1,6 @@
 %% Plots for the Eu5In2Sb6 manuscript figures. Vincent Morano, 05/11/2022
 %% Figure 1
-% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC
+%% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC. Grease scale factor.
 clear
 close all
 
@@ -12,16 +12,16 @@ set(0, 'defaultaxesfontsize', 10)
 transition7K = 7.2028; % Midpoint of sharp edge
 transition14K = 14.0443; % Midpoint of sharp edge
 fitLimHigh = 200; % Don't fit to temperatures beyond this upper limit
-fitLimLow = 90; % Don't fit to temperatures beyond this lower limit
+fitLimLow = 70; % Don't fit to temperatures beyond this lower limit
 debTemp0 = 170; % K
-anharm0 = 1e-4; % Initial fitting value for a rescaling to match Dulong-Petit. Can think of it as an effective mass factor I suppose.
+alpha0 = 0.02;
 errPts = 1e2;
-fact = [0, 0]; % Debye temperature, T-linear anharmonic correction
-offset = [5, 0.00001];
+fact = [0, 0]; % Debye temperature, alpha factor
+offset = [5, 0.002];
 
 % Constants
 mass = 5.19; % Sample mass in mg
-massErr = 0.03; % IQM scale uncertainty in mg, see 04/06/2023 526 notes
+massErr = 0.1; % IQM scale uncertainty in mg, see 04/06/2023 526 notes
 molarMass = 5*(151.96)+2*(114.82)+6*(121.76);
 n = 13; % Atoms in formula unit
 N = 6.022e23; % Avogadro's number
@@ -36,29 +36,43 @@ tmp = file(13:end,8);
 mask = cellfun(@ismissing,tmp);
 tmp(mask) = {[]};
 temperaturePre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)); % K. Remove missing elements
-tmp = file(13:end,10);
+tmp = file(13:end,14);
 mask = cellfun(@ismissing,tmp);
 tmp(mask) = {[]};
-specHeatPre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
-tmp = file(13:end,11);
+specHeatTotal = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+tmp = file(13:end,15);
 mask = cellfun(@ismissing,tmp);
 tmp(mask) = {[]};
-specHeatErrPre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+specHeatTotalErr = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+tmp = file(13:end,12);
+mask = cellfun(@ismissing,tmp);
+tmp(mask) = {[]};
+specHeatAddenda = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+tmp = file(13:end,13);
+mask = cellfun(@ismissing,tmp);
+tmp(mask) = {[]};
+specHeatAddendaErr = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
 
-specHeatLBPre = specHeatPre*mass/(mass+massErr); % Lower envelope representing systematic uncertainty in mass.
-specHeatLBErrPre = specHeatErrPre*mass/(mass+massErr);
-specHeatUBPre = specHeatPre*mass/(mass-massErr); % Upper envelope representing systematic uncertainty in mass.
-specHeatUBErrPre = specHeatErrPre*mass/(mass-massErr);
+specHeatLBTotal = specHeatTotal*mass/(mass+massErr); % Lower envelope representing systematic uncertainty in mass.
+specHeatLBTotalErr = specHeatTotalErr*mass/(mass+massErr);
+specHeatLBAddenda = specHeatAddenda*mass/(mass+massErr); % Lower envelope representing systematic uncertainty in mass.
+specHeatLBAddendaErr = specHeatAddendaErr*mass/(mass+massErr);
+specHeatUBTotal = specHeatTotal*mass/(mass-massErr); % Upper envelope representing systematic uncertainty in mass.
+specHeatUBTotalErr = specHeatTotalErr*mass/(mass-massErr);
+specHeatUBAddenda = specHeatAddenda*mass/(mass-massErr); % Upper envelope representing systematic uncertainty in mass.
+specHeatUBAddendaErr = specHeatAddendaErr*mass/(mass-massErr);
 
-[specHeatCalc, specHeatMag, entropy, entropyErr, specHeat, specHeatErr, temperature] = anharmEntropy(specHeatPre, specHeatErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
-%[specHeatLBCalc, specHeatLBMag, entropyLB, entropyLBErr, specHeatLB, specHeatLBErr, temperatureLB] = anharmEntropy(specHeatLBPre, specHeatLBErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
-%[specHeatUBCalc, specHeatUBMag, entropyUB, entropyUBErr, specHeatUB, specHeatUBErr, temperatureUB] = anharmEntropy(specHeatUBPre, specHeatUBErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
+[specHeatCalc, specHeatMag, entropy, entropyErr, specHeat, specHeatErr, temperature, fval, chiUpper] = greaseCorrEntropy(specHeatTotal, specHeatTotalErr, specHeatAddenda, specHeatAddendaErr, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, alpha0, errPts, fact, offset);
+disp('LB:')
+[specHeatLBCalc, specHeatLBMag, entropyLB, entropyLBErr, specHeatLB, specHeatLBErr, temperatureLB, fvalLB, chiUpperLB] = greaseCorrEntropy(specHeatLBTotal, specHeatLBTotalErr, specHeatLBAddenda, specHeatLBAddendaErr, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, alpha0, errPts, fact, offset);
+disp('UB:')
+[specHeatUBCalc, specHeatUBMag, entropyUB, entropyUBErr, specHeatUB, specHeatUBErr, temperatureUB, fvalUB, chiUpperUB] = greaseCorrEntropy(specHeatUBTotal, specHeatUBTotalErr, specHeatUBAddenda, specHeatUBAddendaErr, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, alpha0, errPts, fact, offset);
 
 figure(1)
 nexttile(1)
 hold on
-%plot(temperatureLB, specHeatLB./temperatureLB, '--k') % Data.  Pretty much on top of the fit because the relative uncertainty in the mass is small.
-%plot(temperatureUB, specHeatUB./temperatureUB, '--k')
+% plot(temperatureLB, specHeatLB./temperatureLB, '--k') % Data.  Pretty much on top of the fit because the relative uncertainty in the mass is small.
+% plot(temperatureUB, specHeatUB./temperatureUB, '--k')
 xline(transition7K, '--k', 'LineWidth', 1.0); % Midpoint of TN2
 xline(transition14K, '--k', 'LineWidth', 1.0); % Midpoint of TN1
 xlim([0 270])
@@ -69,8 +83,8 @@ text(0.02, 0.9, '(a)', 'units', 'normalized', 'FontSize', 12)
 hold off
 nexttile(2)
 hold on
-%plot(temperatureLB, specHeatLBMag./temperatureLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
-%plot(temperatureUB, specHeatUBMag./temperatureUB, '--k')
+% plot(temperatureLB, specHeatLBMag./temperatureLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
+% plot(temperatureUB, specHeatUBMag./temperatureUB, '--k')
 xline(transition7K, '--k', 'LineWidth', 1.0) % Midpoint of TN2
 xline(transition14K, '--k', 'LineWidth', 1.0) % Midpoint of TN1
 yline(0, '--k', 'LineWidth', 0.5) % x-axis to indicate which points are negative
@@ -83,9 +97,9 @@ text(0.02, 0.9, '(b)', 'units', 'normalized', 'FontSize', 12)
 hold off
 nexttile(3)
 hold on
-%plot(temperatureLB, entropyLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
-%plot(temperatureUB, entropyUB, '--k')
-ln = yline(5*N*kB*log(8),'--k', '\rm5\itR\rmln(8)', 'LabelHorizontalAlignment', 'center'); % 5 Eu atoms per formula unit, spin 7/2
+plot(temperatureLB, entropyLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
+plot(temperatureUB, entropyUB, '--k')
+ln = yline(5*N*kB*log(8),'--k', '\rm5\itR\rmln(8)', 'LabelHorizontalAlignment', 'right', 'LabelVerticalAlignment', 'top'); % 5 Eu atoms per formula unit, spin 7/2
 ln.FontSize = 10;
 xline(transition7K, '--k', 'LineWidth', 1.0) % Midpoint of TN2
 xline(transition14K, '--k', 'LineWidth', 1.0) % Midpoint of TN1
@@ -97,9 +111,9 @@ text(0.02, 0.9, '(c)', 'units', 'normalized', 'FontSize', 12)
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\HC.eps';
-%exportgraphics(gcf, fdir, 'ContentType', 'vector')
+exportgraphics(gcf, fdir, 'ContentType', 'vector')
 
-%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HC.mat') % Save the Workspace
+save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HC.mat') % Save the Workspace
 
 % Estimate error from integral rather than cumtrapz. See 04/06/2023 526 notes.
 entropyErrEst = sqrt(sum((temperature(2:end)-temperature(1:end-1)).^2./temperature(1:end-1).^2.*specHeatErr(1:end-1).^2));
@@ -679,7 +693,7 @@ legend([e1, e2],{'\itT\rm = 18 K', '\itT\rm = 1.6 K'})
 legend('boxoff')
 text(0.15, 0.9, '(0,0,3/2)', 'Units', 'normalized', 'fontsize', 11)
 text(0.15, 0.75, 'BT7', 'Units', 'normalized', 'fontsize', 11)
-xlabel('(0\itK\rm0) (rlu)')
+xlabel('(0K0) (rlu)')
 ylabel('\itI\rm (det. cts/15 sec.)')
 xlim([min(K, [], 'all'), max(K, [], 'all')])
 ylim([0 1600])
