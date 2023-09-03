@@ -1,6 +1,6 @@
 %% Plots for the Eu5In2Sb6 manuscript figures. Vincent Morano, 05/11/2022
 %% Figure 1
-%% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC. Grease scale factor.
+% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC. Grease scale factor.
 clear
 close all
 
@@ -97,8 +97,8 @@ text(0.02, 0.9, '(b)', 'units', 'normalized', 'FontSize', 12)
 hold off
 nexttile(3)
 hold on
-plot(temperatureLB, entropyLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
-plot(temperatureUB, entropyUB, '--k')
+plot(temperatureLB, entropyLB, '--r') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
+plot(temperatureUB, entropyUB, '--r')
 ln = yline(5*N*kB*log(8),'--k', '\rm5\itR\rmln(8)', 'LabelHorizontalAlignment', 'right', 'LabelVerticalAlignment', 'top'); % 5 Eu atoms per formula unit, spin 7/2
 ln.FontSize = 10;
 xline(transition7K, '--k', 'LineWidth', 1.0) % Midpoint of TN2
@@ -146,7 +146,7 @@ t = tiledlayout(5, 1, 'TileSpacing', 'none', 'Padding', 'compact');
 ha(1) = nexttile;
 hold on
 text(0.04, 0.9, '(a)', 'Units', 'normalized', 'fontsize', 11)
-ylabel('\itC\rm (J/mol\cdotK)')
+ylabel('\itC\rm (J/mol K)')
 errorbar(temperature, specHeat, specHeatErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 set(gca, 'TickLength', [0.02, 0.01])
 set(gca, 'XTickLabel', []);
@@ -456,7 +456,7 @@ intCalcFull = model(xFit(:), 7.2028, 0.366, tempCalcFull);
 ha(5) = nexttile;
 hold on
 text(0.04, 0.1, '(e)', 'Units', 'normalized', 'fontsize', 11)
-ylabel('\itI\rm (cts\cdotdeg.(2\Theta)/sec.)')
+ylabel('\itI\rm (cts deg.(2\Theta)/sec.)')
 xlabel('\itT\rm (K)')
 errorbar(temp, area, areaErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 p1 = plot(tempCalc, intCalc, 'LineWidth', 1, 'Color', 'r');
@@ -1076,3 +1076,109 @@ hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\MvHemumoleu.eps';
 %exportgraphics(gcf, fdir, 'ContentType', 'vector')
+
+%% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC. Anharmonic correction.
+clear
+close all
+
+set(0, 'defaulttextinterpreter', 'tex')
+set(0, 'defaultlegendinterpreter', 'tex')
+set(0, 'defaultaxesfontsize', 10)
+
+% Initial values for fitting
+transition7K = 7.2028; % Midpoint of sharp edge
+transition14K = 14.0443; % Midpoint of sharp edge
+fitLimHigh = 200; % Don't fit to temperatures beyond this upper limit
+fitLimLow = 70; % Don't fit to temperatures beyond this lower limit
+debTemp0 = 170; % K
+anharm0 = 1e-4; % Initial fitting value for a rescaling to match Dulong-Petit. Can think of it as an effective mass factor I suppose.
+errPts = 1e2;
+fact = [0, 0]; % Debye temperature, T-linear anharmonic correction
+offset = [5, 0.00008];
+
+% Constants
+mass = 5.19; % Sample mass in mg
+massErr = 0.1; % IQM scale uncertainty in mg, see 04/06/2023 526 notes
+molarMass = 5*(151.96)+2*(114.82)+6*(121.76);
+n = 13; % Atoms in formula unit
+N = 6.022e23; % Avogadro's number
+kB = 1.380649e-23; % Boltzmann constant
+R = N*kB; % Gas constant in J/mol-K
+
+fileLoc = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\HeatCapacity\Eu5In2Sb6\HC12252020\';
+fileName = 'hc_sample_12232020_1p8_300K.dat';
+file = readcell(strcat(fileLoc, fileName), 'FileType', 'text', 'NumHeaderLines', 14, 'Delimiter', ',');
+
+tmp = file(13:end,8);
+mask = cellfun(@ismissing,tmp);
+tmp(mask) = {[]};
+temperaturePre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)); % K. Remove missing elements
+tmp = file(13:end,10);
+mask = cellfun(@ismissing,tmp);
+tmp(mask) = {[]};
+specHeatPre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+tmp = file(13:end,11);
+mask = cellfun(@ismissing,tmp);
+tmp(mask) = {[]};
+specHeatErrPre = cell2mat(cellfun(@rmmissing, tmp, 'UniformOutput', false)).*molarMass./(mass./1e3)./(1e6); % Converting from muJ/K to J/mol-K
+
+specHeatLBPre = specHeatPre*mass/(mass+massErr); % Lower envelope representing systematic uncertainty in mass.
+specHeatLBErrPre = specHeatErrPre*mass/(mass+massErr);
+specHeatUBPre = specHeatPre*mass/(mass-massErr); % Upper envelope representing systematic uncertainty in mass.
+specHeatUBErrPre = specHeatErrPre*mass/(mass-massErr);
+
+[specHeatCalc, specHeatMag, entropy, entropyErr, specHeat, specHeatErr, temperature, fval, chiUpper] = anharmEntropy(specHeatPre, specHeatErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
+disp('LB:')
+[specHeatLBCalc, specHeatLBMag, entropyLB, entropyLBErr, specHeatLB, specHeatLBErr, temperatureLB, fvalLB, chiUpperLB] = anharmEntropy(specHeatLBPre, specHeatLBErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
+disp('UB:')
+[specHeatUBCalc, specHeatUBMag, entropyUB, entropyUBErr, specHeatUB, specHeatUBErr, temperatureUB, fvalUB, chiUpperUB] = anharmEntropy(specHeatUBPre, specHeatUBErrPre, temperaturePre, n, fitLimLow, fitLimHigh, debTemp0, anharm0, errPts, fact, offset);
+
+figure(1)
+nexttile(1)
+hold on
+% plot(temperatureLB, specHeatLB./temperatureLB, '--k') % Data.  Pretty much on top of the fit because the relative uncertainty in the mass is small.
+% plot(temperatureUB, specHeatUB./temperatureUB, '--k')
+xline(transition7K, '--k', 'LineWidth', 1.0); % Midpoint of TN2
+xline(transition14K, '--k', 'LineWidth', 1.0); % Midpoint of TN1
+xlim([0 270])
+set(gca, 'ytick', [0, 2, 4, 6, 8, 10])
+set(gca, 'xticklabel', [])
+set(gca, 'XScale', 'log')
+text(0.02, 0.9, '(a)', 'units', 'normalized', 'FontSize', 12)
+hold off
+nexttile(2)
+hold on
+% plot(temperatureLB, specHeatLBMag./temperatureLB, '--k') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
+% plot(temperatureUB, specHeatUBMag./temperatureUB, '--k')
+xline(transition7K, '--k', 'LineWidth', 1.0) % Midpoint of TN2
+xline(transition14K, '--k', 'LineWidth', 1.0) % Midpoint of TN1
+yline(0, '--k', 'LineWidth', 0.5) % x-axis to indicate which points are negative
+ylim([-0.5 10])
+xlim([0 270])
+set(gca, 'ytick', [0, 2, 4, 6, 8])
+set(gca, 'xticklabel', [])
+set(gca, 'XScale', 'log')
+text(0.02, 0.9, '(b)', 'units', 'normalized', 'FontSize', 12)
+hold off
+nexttile(3)
+hold on
+plot(temperatureLB, entropyLB, '--r') % Model. Pretty much on top of the fit because the relative uncertainty in the mass is small.
+plot(temperatureUB, entropyUB, '--r')
+ln = yline(5*N*kB*log(8),'--k', '\rm5\itR\rmln(8)', 'LabelHorizontalAlignment', 'right', 'LabelVerticalAlignment', 'bottom'); % 5 Eu atoms per formula unit, spin 7/2
+ln.FontSize = 10;
+xline(transition7K, '--k', 'LineWidth', 1.0) % Midpoint of TN2
+xline(transition14K, '--k', 'LineWidth', 1.0) % Midpoint of TN1
+xlim([0 270])
+ylim([0 115])
+set(gca, 'ytick', [0, 40, 80, 120])
+set(gca, 'XScale', 'log')
+text(0.02, 0.9, '(c)', 'units', 'normalized', 'FontSize', 12)
+hold off
+
+fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\HCAnharm.eps';
+exportgraphics(gcf, fdir, 'ContentType', 'vector')
+
+save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HCAnharm.mat') % Save the Workspace
+
+% Estimate error from integral rather than cumtrapz. See 04/06/2023 526 notes.
+entropyErrEst = sqrt(sum((temperature(2:end)-temperature(1:end-1)).^2./temperature(1:end-1).^2.*specHeatErr(1:end-1).^2));
