@@ -1168,7 +1168,7 @@ fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\
 
 figure(3)
 hold on
-xlabel('\it{H}\rm{ (mT)}', 'FontSize', 12)
+xlabel('\mu_0\it{H}\rm{ (mT)}', 'FontSize', 12)
 ylabel('\it{M}\rm{ (\mu_B Eu^{-1})}', 'FontSize', 12)
 e8 = errorbar(field10KMvHa./10, mom10KMvHa, mom10KMvHErra, '-o', 'MarkerFaceColor', 'w');
 set(gca, 'FontSize', 12)
@@ -1178,7 +1178,7 @@ box on
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\MvHmuB.eps';
-%exportgraphics(gcf, fdir, 'ContentType', 'vector')
+exportgraphics(gcf, fdir, 'ContentType', 'vector')
 
 figure(4)
 hold on
