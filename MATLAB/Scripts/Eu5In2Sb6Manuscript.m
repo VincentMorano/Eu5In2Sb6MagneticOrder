@@ -578,7 +578,7 @@ e6 = plot(temp1000FCc, susc1000FCc, 'LineWidth', 2);
 text(0.02, 0.84, '\mu_0\it{H}\rm{ = 100 mT}', 'units', 'normalized', 'FontSize', 9)
 text(0.4, 0.85, ['a (\color[rgb]{', num2str(e2.Color), '}FC\color{black}, \color[rgb]{', num2str(e1.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
 text(0.4, 0.18, ['b (\color[rgb]{', num2str(e4.Color), '}FC\color{black}, \color[rgb]{', num2str(e3.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
-text(0.72, 0.6, ['c (\color[rgb]{', num2str(e6.Color), '}FC\color{black}, \color[rgb]{', num2str(e5.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
+text(0.72, 0.62, ['c (\color[rgb]{', num2str(e6.Color), '}FC\color{black}, \color[rgb]{', num2str(e5.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
 set(gca, 'TickLength', [0.02, 0.01])
 xlim([0 20])
 ylim([0 0.8])
