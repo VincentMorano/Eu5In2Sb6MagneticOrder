@@ -111,9 +111,9 @@ text(0.02, 0.9, '(c)', 'units', 'normalized', 'FontSize', 12)
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\HC.eps';
-exportgraphics(gcf, fdir, 'ContentType', 'vector')
+%exportgraphics(gcf, fdir, 'ContentType', 'vector')
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HC.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HC.mat') % Save the Workspace
 
 % Estimate error from integral rather than cumtrapz. See 04/06/2023 526 notes.
 entropyErrEst = sqrt(sum((temperature(2:end)-temperature(1:end-1)).^2./temperature(1:end-1).^2.*specHeatErr(1:end-1).^2));
@@ -124,7 +124,7 @@ close all
 
 set(0, 'defaulttextinterpreter', 'tex')
 set(0, 'defaultlegendinterpreter', 'tex')
-set(0, 'defaultaxesfontsize', 10)
+set(0, 'defaultaxesfontsize', 9)
 
 % Add the heat capacity plot
 mass = 5.19; % Sample mass in mg
@@ -141,8 +141,8 @@ specHeatErr = rmmissing(file(1).data(:,11))*molarMass/(mass/1e3)/(1e6); % Conver
 % specHeat = arrayfun(@(i) mean(specHeatAll(i:i+nAvg-1)),1:nAvg:length(specHeatAll)-nAvg+1)';
 % specHeatErr = arrayfun(@(i) sqrt(sum(specHeatErrAll(i:i+nAvg-1).^2))/length(specHeatErrAll(i:i+nAvg-1)),1:nAvg:length(specHeatErrAll)-nAvg+1)';
 
-figure('Units', 'inches', 'Position', [0, 1.0, 3.375, 6.0])
-t = tiledlayout(5, 1, 'TileSpacing', 'none', 'Padding', 'compact');
+figure('Units', 'inches', 'Position', [0, 0.0, 3.37, 6.2])
+t = tiledlayout(6, 1, 'TileSpacing', 'none', 'Padding', 'compact');
 ha(1) = nexttile;
 hold on
 text(0.04, 0.9, '(a)', 'Units', 'normalized', 'fontsize', 11)
@@ -158,6 +158,7 @@ xline(7.2028, '--k', 'LineWidth', 1.0)
 xline(14.240, '--k', 'LineWidth', 1.0)
 xticks([0 5 10 15 20])
 yticks([0 25 50 75 100 125])
+pbaspect([3 1 1])
 hold off
 
 % (1,0,0) OP
@@ -224,7 +225,7 @@ disp(['Beta error: ', num2str(xErr(4))])
 figure(1)
 ha(2) = nexttile;
 hold on
-text(0.04, 0.1, '(b)', 'Units', 'normalized', 'fontsize', 11)
+text(0.04, 0.12, '(b)', 'Units', 'normalized', 'fontsize', 11)
 ylabel('\itI\rm (cts/sec.)')
 errorbar(temp, int, intErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 p1 = plot(tempCalc, intCalc, 'LineWidth', 1, 'Color', 'r');
@@ -239,7 +240,8 @@ xline(14.240, '--k', 'LineWidth', 1.0)
 xticks([0 5 10 15 20])
 yticks([0 5 10 15 20])
 box on
-text(0.95, 0.75, {'(100)', 'Peak', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+text(0.95, 0.73, {'(100)', 'Peak', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+pbaspect([3 1 1])
 hold off
 
 % (1,4,0) OP
@@ -272,7 +274,7 @@ intErr = int.*sqrt(intPrelimErr.^2./intPrelim.^2 + monAvgErr^2./mean(mon)^2); % 
 
 ha(3) = nexttile;
 hold on
-text(0.04, 0.1, '(c)', 'Units', 'normalized', 'fontsize', 11)
+text(0.04, 0.12, '(c)', 'Units', 'normalized', 'fontsize', 11)
 ylabel('\itI\rm (cts/sec.)')
 errorbar(temp, int, intErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 set(gca, 'TickLength', [0.02, 0.01])
@@ -285,7 +287,8 @@ set(gca,'PlotBoxAspectRatio',[2 1 1]);
 xticks([0 5 10 15 20])
 yticks([4 5 6 7])
 box on
-text(0.95, 0.75, {'(140)', 'Peak', 'SPINS'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+text(0.95, 0.73, {'(140)', 'Peak', 'SPINS'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+pbaspect([3 1 1])
 hold off
 
 % (0,1,1) OP
@@ -314,7 +317,7 @@ intErr = int.*sqrt(intPrelimErr.^2./intPrelim.^2 + monAvgErr^2./mean(mon)^2); % 
 
 ha(4) = nexttile;
 hold on
-text(0.04, 0.1, '(d)', 'Units', 'normalized', 'fontsize', 11)
+text(0.04, 0.12, '(d)', 'Units', 'normalized', 'fontsize', 11)
 ylabel('\itI\rm (cts/sec.)')
 errorbar(temp, int, intErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 set(gca, 'TickLength', [0.02, 0.01])
@@ -327,7 +330,8 @@ set(gca,'XTickLabel',[]);
 xticks([0 5 10 15 20])
 yticks([0 1 2])
 box on
-text(0.95, 0.75, {'(011)', 'Peak', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+text(0.95, 0.73, {'(011)', 'Peak', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+pbaspect([3 1 1])
 hold off
 
 % (0,0,1/2) OP
@@ -455,22 +459,136 @@ intCalcFull = model(xFit(:), 7.2028, 0.366, tempCalcFull);
 
 ha(5) = nexttile;
 hold on
-text(0.04, 0.1, '(e)', 'Units', 'normalized', 'fontsize', 11)
-ylabel('\itI\rm (cts deg.(2\Theta)/sec.)')
-xlabel('\itT\rm (K)')
+text(0.04, 0.12, '(e)', 'Units', 'normalized', 'fontsize', 11)
+ylabel('\itI\rm (cts deg.(2\Theta)/sec.)', 'fontsize', 7)
 errorbar(temp, area, areaErr, 'o', 'MarkerSize', 5, 'MarkerFaceColor', 'w')
 p1 = plot(tempCalc, intCalc, 'LineWidth', 1, 'Color', 'r');
 p2 = plot(tempCalcFull, intCalcFull, '--', 'LineWidth', 1, 'Color', 'r');
 set(gca, 'TickLength', [0.02, 0.01])
 xlim([0 20])
-ylim([0 (max(area)+max(areaErr))*1.1])
+ylim([-2 (max(area)+max(areaErr))*1.1])
 xline(7.2028, '--k', 'LineWidth', 1.0)
 xline(14.240, '--k', 'LineWidth', 1.0)
+set(gca,'XTickLabel',[]);
 set(gca,'PlotBoxAspectRatio',[2 1 1]);
 xticks([0 5 10 15 20])
 yticks([0 5 10 15 20])
 box on
-text(0.95, 0.75, {'(0,0,1/2)', '\Theta-2\Theta', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+text(0.95, 0.73, {'(0,0,1/2)', '\Theta-2\Theta', 'BT7'}, 'Units', 'normalized', 'fontsize', 9, 'HorizontalAlignment', 'right')
+pbaspect([3 1 1])
+hold off
+
+% Susceptibility data
+clear
+
+transition7K = 7.2028; % Midpoint of sharp HC edge
+transition14K = 14.0443; % Midpoint of sharp HC edge
+massc = 1.59; % Sample mass in mg
+massb = 17.17; % Sample mass in mg
+massa = 16.06; % Sample mass in mg
+molarMass = 5*(151.96)+2*(114.82)+6*(121.76); % Sample grams per mole formula unit
+convFact1000c = 1/((massc/1e3)/molarMass)/5/1e3; % Convert from emu to emu/mol/Eu(/Oe).
+convFact1000b = 1/((massb/1e3)/molarMass)/5/1e3; % Convert from emu to emu/mol/Eu(/Oe).
+convFact1000a = 1/((massa/1e3)/molarMass)/5/1e3; % Convert from emu to emu/mol/Eu(/Oe).
+
+% Import a-axis data
+fileLoca = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MPMS\Eu5In2Sb6\TBe339\';
+fileNamea = 'Eu5In2Sb6_TBe339_16p06mg_MPMS_MvT_aAxis_041523.dat';
+headerLinesa = 45;
+filea = strcat(fileLoca, fileNamea);
+dataa = readtable(filea, 'FileType', 'delimitedtext', 'NumHeaderLines', headerLinesa, 'TrailingDelimitersRule', 'keep');
+fida = fopen(filea); % Open file to take column headings as one line of text and edit
+titlea = textscan(fida, '%s', 89, 'delimiter', ',', 'MultipleDelimsAsOne', 1, 'headerlines', headerLinesa-1);
+fclose(fida);
+titlea = titlea{1};
+dataa.Properties.VariableNames = titlea; % Remove "Comment" from variable names
+
+ind1000ZFCa = 2:448; % 1000 Oe, ZFC
+ind1000FCa = 449:895; % 1000 Oe, FC
+
+susc1000ZFCa = dataa(ind1000ZFCa, 'DC Moment Free Ctr (emu)').(1)*convFact1000a;
+susc1000FCa = dataa(ind1000FCa, 'DC Moment Free Ctr (emu)').(1)*convFact1000a;
+
+susc1000ZFCErra = dataa(ind1000ZFCa, 'DC Moment Err Free Ctr (emu)').(1)*convFact1000a;
+susc1000FCErra = dataa(ind1000FCa, 'DC Moment Err Free Ctr (emu)').(1)*convFact1000a;
+
+temp1000ZFCa = dataa(ind1000ZFCa, 'Temperature (K)').(1);
+temp1000FCa = dataa(ind1000FCa, 'Temperature (K)').(1);
+
+% Import b-axis data
+fileLocb = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MPMS\Eu5In2Sb6\TBe339\';
+fileNameb = 'Eu5In2Sb6_b_TBe339_17p17mg_b_102422.dat';
+headerLinesb = 45;
+fileb = strcat(fileLocb, fileNameb);
+datab = readtable(fileb, 'FileType', 'delimitedtext', 'NumHeaderLines', headerLinesb, 'TrailingDelimitersRule', 'keep');
+fidb = fopen(fileb); % Open file to take column headings as one line of text and edit
+titleb = textscan(fidb, '%s', 89, 'delimiter', ',', 'MultipleDelimsAsOne', 1, 'headerlines', headerLinesb-1);
+fclose(fidb);
+titleb = titleb{1};
+datab.Properties.VariableNames = titleb; % Remove "Comment" from variable names
+
+ind1000ZFCb = 2:386; % 1000 Oe, ZFC
+ind1000FCb = 388:1394; % 1000 Oe, FC
+
+susc1000ZFCb = datab(ind1000ZFCb, 'DC Moment Free Ctr (emu)').(1)*convFact1000b;
+susc1000FCb = datab(ind1000FCb, 'DC Moment Free Ctr (emu)').(1)*convFact1000b;
+
+susc1000ZFCErrb = datab(ind1000ZFCb, 'DC Moment Err Free Ctr (emu)').(1)*convFact1000b;
+susc1000FCErrb = datab(ind1000FCb, 'DC Moment Err Free Ctr (emu)').(1)*convFact1000b;
+
+temp1000ZFCb = datab(ind1000ZFCb, 'Temperature (K)').(1);
+temp1000FCb = datab(ind1000FCb, 'Temperature (K)').(1);
+
+% Import c-axis data
+fileLocc = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\VSM\Eu5In2Sb6\080522_TBe343_1p59mg_cAxis\';
+fileNamec = 'MvT_1p59mg.dat';
+headerLinesc = 23;
+filec = strcat(fileLocc, fileNamec);
+datac = readtable(filec, 'FileType', 'delimitedtext', 'NumHeaderLines', headerLinesc, 'TrailingDelimitersRule', 'keep');
+fidc = fopen(filec); % Open file to take column headings as one line of text and edit
+titlec = textscan(fidc, '%s', 57, 'delimiter', ',', 'MultipleDelimsAsOne', 1, 'headerlines', headerLinesc-1);
+fclose(fidc);
+titlec = titlec{1};
+datac.Properties.VariableNames = titlec; % Remove "Comment" from variable names
+
+ind1000ZFCc = 2:9724; % 1000 Oe, ZFC
+ind1000FCc = 29129:38801; % 1000 Oe, FC. 9731:19288 had Issue where temperature was overshot and had to come back
+
+susc1000ZFCc = datac(ind1000ZFCc, 'Moment (emu)').(1)*convFact1000c;
+susc1000FCc = datac(ind1000FCc, 'Moment (emu)').(1)*convFact1000c;
+
+susc1000ZFCErrc = datac(ind1000ZFCc, 'M. Std. Err. (emu)').(1)*convFact1000c;
+susc1000FCErrc = datac(ind1000FCc, 'M. Std. Err. (emu)').(1)*convFact1000c;
+
+temp1000ZFCc = datac(ind1000ZFCc, 'Temperature (K)').(1);
+temp1000FCc = datac(ind1000FCc, 'Temperature (K)').(1);
+
+% Plot susceptibility versus temperature
+ha(6) = nexttile;
+hold on
+text(0.04, 0.12, '(f)', 'Units', 'normalized', 'fontsize', 11)
+xlabel('\it{T}\rm{ (K)}')
+ylabel('\chi (emu mol^{-1} Eu^{-1})', 'fontsize', 7)
+e1 = plot(temp1000ZFCa, susc1000ZFCa, 'LineWidth', 2);
+e2 = plot(temp1000FCa, susc1000FCa, 'LineWidth', 2);
+e3 = plot(temp1000ZFCb, susc1000ZFCb, 'LineWidth', 2);
+e4 = plot(temp1000FCb, susc1000FCb, 'LineWidth', 2);
+e5 = plot(temp1000ZFCc, susc1000ZFCc, 'LineWidth', 2);
+e6 = plot(temp1000FCc, susc1000FCc, 'LineWidth', 2);
+text(0.02, 0.84, '\mu_0\it{H}\rm{ = 100 mT}', 'units', 'normalized', 'FontSize', 9)
+text(0.4, 0.85, ['a (\color[rgb]{', num2str(e2.Color), '}FC\color{black}, \color[rgb]{', num2str(e1.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
+text(0.4, 0.18, ['b (\color[rgb]{', num2str(e4.Color), '}FC\color{black}, \color[rgb]{', num2str(e3.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
+text(0.72, 0.6, ['c (\color[rgb]{', num2str(e6.Color), '}FC\color{black}, \color[rgb]{', num2str(e5.Color), '}ZFC\color{black})'], 'units', 'normalized', 'FontSize', 9)
+set(gca, 'TickLength', [0.02, 0.01])
+xlim([0 20])
+ylim([0 0.8])
+xline(7.2028, '--k', 'LineWidth', 1.0)
+xline(14.240, '--k', 'LineWidth', 1.0)
+set(gca,'PlotBoxAspectRatio',[2 1 1]);
+xticks([0 5 10 15 20])
+yticks([0 0.2 0.4 0.6])
+box on
+pbaspect([3 1 1])
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\overplot.eps';
@@ -1050,12 +1168,12 @@ fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\
 
 figure(3)
 hold on
-xlabel('\it{H}\rm{ (Oe)}', 'FontSize', 12)
+xlabel('\it{H}\rm{ (mT)}', 'FontSize', 12)
 ylabel('\it{M}\rm{ (\mu_B Eu^{-1})}', 'FontSize', 12)
-e8 = errorbar(field10KMvHa, mom10KMvHa, mom10KMvHErra, 'o', 'MarkerFaceColor', 'w');
+e8 = errorbar(field10KMvHa./10, mom10KMvHa, mom10KMvHErra, '-o', 'MarkerFaceColor', 'w');
 set(gca, 'FontSize', 12)
 pbaspect([16 9 1])
-xlim([-2000, 2000])
+xlim([-200, 200])
 box on
 hold off
 
@@ -1065,7 +1183,7 @@ fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\
 figure(4)
 hold on
 xlabel('\it{H}\rm{ (Oe)}', 'FontSize', 12)
-ylabel('\it{M}\rm{ (emu mol^{-1} Eu^{-1})}', 'FontSize', 12)
+ylabel('\it{M}\rm{ (emu mol^{-1} Eu^{-1} )}', 'FontSize', 12)
 e7 = errorbar(field10KMvHa, mom10KMvHaemumoleu, mom10KMvHErraemumoleu, 'o', 'MarkerFaceColor', 'w');
 set(gca, 'FontSize', 12)
 pbaspect([16 9 1])
@@ -1075,6 +1193,21 @@ box on
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\MvHemumoleu.eps';
+%exportgraphics(gcf, fdir, 'ContentType', 'vector')
+
+figure(5)
+hold on
+xlabel('\mu_0\it{H}\rm{ (mT)}', 'FontSize', 12)
+ylabel('\it{M}\rm{ (emu mol^{-1} Eu^{-1})}', 'FontSize', 12)
+e7 = errorbar(field10KMvHa./10, mom10KMvHaemumoleu, mom10KMvHErraemumoleu, 'o', 'MarkerFaceColor', 'w');
+set(gca, 'FontSize', 12)
+pbaspect([16 9 1])
+xlim([-200, 200])
+ylim([-1100, 1100])
+box on
+hold off
+
+fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\MvHmT.eps';
 %exportgraphics(gcf, fdir, 'ContentType', 'vector')
 
 %% Debye Fit: No Field 12/25/20 Without Threshold on Calculated HC. Anharmonic correction.
@@ -1176,9 +1309,9 @@ text(0.02, 0.9, '(c)', 'units', 'normalized', 'FontSize', 12)
 hold off
 
 fdir = 'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Manuscript\HCAnharm.eps';
-exportgraphics(gcf, fdir, 'ContentType', 'vector')
+%exportgraphics(gcf, fdir, 'ContentType', 'vector')
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HCAnharm.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\HCAnharm.mat') % Save the Workspace
 
 % Estimate error from integral rather than cumtrapz. See 04/06/2023 526 notes.
 entropyErrEst = sqrt(sum((temperature(2:end)-temperature(1:end-1)).^2./temperature(1:end-1).^2.*specHeatErr(1:end-1).^2));
