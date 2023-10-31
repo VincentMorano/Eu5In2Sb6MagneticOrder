@@ -65,7 +65,7 @@ for i = 1:length(scans)
     cent0 = sum(scans(i).a3.*(scans(i).intMon-bg0))./sum(scans(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     fwhm0 = 0.3; % Assume close to 0.3 deg.
     area0 = (max(scans(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scans(i).x0 = [bg0; area0; cent0; fwhm0]; % Starting point for fitting.
+    scans(i).x0 = [bg0, area0, cent0, fwhm0]; % Starting point for fitting.
     bglb = min(scans(i).intMon);
     bgub = max(scans(i).intMon);
     centerlb = scans(i).a3(3);
@@ -97,7 +97,7 @@ for i = 1:length(scans)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMCurve.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMCurve.png'])
     
     figure('Units', 'normalized', 'Position', [0.5, 0.3, 0.5, 0.6])
     for j = 1:length(scans(i).x0)
@@ -137,7 +137,7 @@ for i = 1:length(scans)
     title(['Gaussian FWHM: ', num2str(round(scans(i).xFit(4), 4)), '$\pm$', num2str(round(scans(i).xErr(4), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian FWHM (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMError.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMError.png'])
     pause(0.1)
 end
 
@@ -163,11 +163,11 @@ errorbar(arrayfun(@(x) x.Q, scans), arrayfun(@(x) x.xFit(4), scans), arrayfun(@(
 yline(mean(arrayfun(@(x) x.xFit(4), scans)), '-', ['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scans)))])
 box on
 hold off
-saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHM.png')
+%saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHM.png')
 
 disp(['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scans)))])
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMStrFct.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMStrFct.mat') % Save the Workspace
 
 %% Fit strong k=0,0,1/2 magnetic 0KL sample peaks for FWHM versus Q
 
@@ -220,7 +220,7 @@ for i = 1:length(scans)
     cent0 = sum(scans(i).a3.*(scans(i).intMon-bg0))./sum(scans(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     fwhm0 = 0.3; % Assume close to 0.3 deg.
     area0 = (max(scans(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scans(i).x0 = [bg0; area0; cent0; fwhm0]; % Starting point for fitting.
+    scans(i).x0 = [bg0, area0, cent0, fwhm0]; % Starting point for fitting.
     bglb = min(scans(i).intMon);
     bgub = max(scans(i).intMon);
     centerlb = scans(i).a3(3);
@@ -252,7 +252,7 @@ for i = 1:length(scans)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'MagFWHMCurve.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'MagFWHMCurve.png'])
     
     figure('Units', 'normalized', 'Position', [0.5, 0.3, 0.5, 0.6])
     for j = 1:length(scans(i).x0)
@@ -292,7 +292,7 @@ for i = 1:length(scans)
     title(['Gaussian FWHM: ', num2str(round(scans(i).xFit(4), 4)), '$\pm$', num2str(round(scans(i).xErr(4), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian FWHM (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'MagFWHMError.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'MagFWHMError.png'])
     pause(0.1)
 end
 
@@ -311,7 +311,7 @@ end
 
 % Fit to the function for my magnetic fwhm
 modelFWHM = @(x, Q) sqrt(x(1).^2 + (x(2)./Q).^2);
-x0 = [0.3; 0.1];
+x0 = [0.3, 0.1];
 errPts = 1e3;
 fact = [0.2, 0.2];
 offset = [0, 0];
@@ -327,12 +327,12 @@ QPlot = linspace(min(arrayfun(@(x) x.Q, scans)), max(arrayfun(@(x) x.Q, scans)),
 plot(QPlot, modelFWHM(xFit, QPlot))
 box on
 hold off
-saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\MagFWHM.png')
+%saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\MagFWHM.png')
 
 disp(['Delta A3r: ', num2str(xFit(1))])
 disp(['Delta Q: ', num2str(xFit(2))])
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\MagFWHMStrFct.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\MagFWHMStrFct.mat') % Save the Workspace
 
 %% Fit for integrated intensities of 0KL sample rocking scans, calculate structure factors.
 clear
@@ -392,7 +392,7 @@ for i = 1:length(scans)
     bg0 = mean(tmp(1:3)); % Guess that the background is close to the average of the lowest couple of datapoints in the scan.
     cent0 = sum(scans(i).a3.*(scans(i).intMon-bg0))./sum(scans(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     area0 = (max(scans(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scans(i).x0 = [bg0; area0; cent0]; % Starting point for fitting.
+    scans(i).x0 = [bg0, area0, cent0]; % Starting point for fitting.
     bglb = min(scans(i).intMon);
     bgub = max(scans(i).intMon);
     centerlb = scans(i).a3(7);
@@ -422,7 +422,7 @@ for i = 1:length(scans)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'Curve.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'Curve.png'])
     
     figure('Units', 'normalized', 'Position', [0.5, 0.1, 0.5, 0.8])
     for j = 1:length(scans(i).x0)
@@ -458,7 +458,7 @@ for i = 1:length(scans)
     title(['Gaussian Center: ', num2str(round(scans(i).xFit(3), 4)), '$\pm$', num2str(round(scans(i).xErr(3), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian Center (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'Error.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'Error.png'])
     pause(0.1)
 end
 
@@ -478,7 +478,7 @@ for i = 1:length(scans)
     [scans(i).R0,scans(i).M] = ResMat(scans(i).Q,scans(i).W,scans(i).Exp);
     [scans(i).f2,scans(i).f2Err] = structFact(scans(i).R0, scans(i).M, scans(i).xFit(2), scans(i).xErr(2), scans(i).Q);
 end
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\BT7StrFct.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\BT7StrFct.mat') % Save the Workspace
 
 %% Save relevant numbers to output file for Mantid to generate absorption-corrected .int files.
 % Save to Excel workbook. Sort based on measurement set.
@@ -700,7 +700,7 @@ for i = 1:length(scans)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMCurveSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMCurveSPINS.png'])
     
     figure('Units', 'normalized', 'Position', [0.5, 0.3, 0.5, 0.6])
     for j = 1:length(scans(i).x0)
@@ -740,7 +740,7 @@ for i = 1:length(scans)
     title(['Gaussian FWHM: ', num2str(round(scans(i).xFit(4), 4)), '$\pm$', num2str(round(scans(i).xErr(4), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian FWHM (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMErrorSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'NucFWHMErrorSPINS.png'])
     pause(0.1)
 end
 
@@ -760,11 +760,11 @@ errorbar(arrayfun(@(x) x.Q, scans), arrayfun(@(x) x.xFit(4), scans), arrayfun(@(
 yline(mean(arrayfun(@(x) x.xFit(4), scans)), '-', ['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scans)))])
 box on
 hold off
-saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMSPINS.png')
+%saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMSPINS.png')
 
 disp(['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scans)))])
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMStrFctSPINS.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\NucFWHMStrFctSPINS.mat') % Save the Workspace
 
 %% Fit to the fwhm of the 10 K k=0 SPINS peaks
 clear
@@ -857,7 +857,7 @@ for i = 1:length(scansFit)
     cent0 = sum(scansFit(i).a3.*(scansFit(i).intMon-bg0))./sum(scansFit(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     fwhm0 = 0.3; % Assume close to 0.3 deg.
     area0 = (max(scansFit(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scansFit(i).x0 = [bg0; area0; cent0; fwhm0]; % Starting point for fitting.
+    scansFit(i).x0 = [bg0, area0, cent0, fwhm0]; % Starting point for fitting.
     bglb = min(scansFit(i).intMon);
     bgub = max(scansFit(i).intMon);
     centerlb = scansFit(i).a3(3);
@@ -889,7 +889,7 @@ for i = 1:length(scansFit)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag10KFWHMCurveSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag10KFWHMCurveSPINS.png'])
 
     figure('Units', 'normalized', 'Position', [0.5, 0.3, 0.5, 0.6])
     for j = 1:length(scansFit(i).x0)
@@ -929,13 +929,13 @@ for i = 1:length(scansFit)
     title(['Gaussian FWHM: ', num2str(round(scansFit(i).xFit(4), 4)), '$\pm$', num2str(round(scansFit(i).xErr(4), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian FWHM (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag10KFWHMErrorSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag10KFWHMErrorSPINS.png'])
     pause(0.1)
 end
 
 % Fit to the function for my magnetic fwhm
 modelFWHM = @(x, Q) sqrt(x(1).^2 + (x(2)./Q).^2);
-x0 = [0.3; 0.1];
+x0 = [0.3, 0.1];
 errPts = 1e3;
 fact = [0.2, 0.2];
 offset = [0, 0];
@@ -951,14 +951,14 @@ QPlot = linspace(min(arrayfun(@(x) x.Q, scansFit(arrayfun(@(x) x.type, scansFit)
 plot(QPlot, modelFWHM(xFit, QPlot))
 box on
 hold off
-saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag10KFWHMSPINS.png')
+%saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag10KFWHMSPINS.png')
 
 disp(['Delta A3r: ', num2str(xFit(1))])
 disp(['Delta Q: ', num2str(xFit(2))])
 
 disp(['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scansFit)))])
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag10KFWHMStrFctSPINS.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag10KFWHMStrFctSPINS.mat') % Save the Workspace
 
 %% Fit to the fwhm of the 1.5 K k=0 SPINS peaks
 clear
@@ -1051,7 +1051,7 @@ for i = 1:length(scansFit)
     cent0 = sum(scansFit(i).a3.*(scansFit(i).intMon-bg0))./sum(scansFit(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     fwhm0 = 0.3; % Assume close to 0.3 deg.
     area0 = (max(scansFit(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scansFit(i).x0 = [bg0; area0; cent0; fwhm0]; % Starting point for fitting.
+    scansFit(i).x0 = [bg0, area0, cent0, fwhm0]; % Starting point for fitting.
     bglb = min(scansFit(i).intMon);
     bgub = max(scansFit(i).intMon);
     centerlb = scansFit(i).a3(3);
@@ -1083,7 +1083,7 @@ for i = 1:length(scansFit)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag1p5KFWHMCurveSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag1p5KFWHMCurveSPINS.png'])
 
     figure('Units', 'normalized', 'Position', [0.5, 0.3, 0.5, 0.6])
     for j = 1:length(scansFit(i).x0)
@@ -1123,13 +1123,13 @@ for i = 1:length(scansFit)
     title(['Gaussian FWHM: ', num2str(round(scansFit(i).xFit(4), 4)), '$\pm$', num2str(round(scansFit(i).xErr(4), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian FWHM (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag1p5KFWHMErrorSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scansFit(i).fileNum), 'Mag1p5KFWHMErrorSPINS.png'])
     pause(0.1)
 end
 
 % Fit to the function for my magnetic fwhm
 modelFWHM = @(x, Q) sqrt(x(1).^2 + (x(2)./Q).^2);
-x0 = [0.3; 0.1];
+x0 = [0.3, 0.1];
 errPts = 1e3;
 fact = [0.2, 0.2];
 offset = [0, 0];
@@ -1145,14 +1145,14 @@ QPlot = linspace(min(arrayfun(@(x) x.Q, scansFit(arrayfun(@(x) x.type, scansFit)
 plot(QPlot, modelFWHM(xFit, QPlot))
 box on
 hold off
-saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag1p5KFWHMSPINS.png')
+%saveas(gcf,'C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag1p5KFWHMSPINS.png')
 
 disp(['Delta A3r: ', num2str(xFit(1))])
 disp(['Delta Q: ', num2str(xFit(2))])
 
 disp(['Mean: ', num2str(mean(arrayfun(@(x) x.xFit(4), scansFit)))])
 
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag1p5KFWHMStrFctSPINS.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\Mag1p5KFWHMStrFctSPINS.mat') % Save the Workspace
 
 %% Fit and save SPINS files with the raw nuclear intensities subtracted off magnetic peaks
 clear
@@ -1272,7 +1272,7 @@ for i = 1:length(scans)
     bg0 = mean(tmp(1:3)); % Guess that the background is close to the average of the lowest couple of datapoints in the scan.
     cent0 = sum(scans(i).a3.*(scans(i).intMon-bg0))./sum(scans(i).intMon-bg0); % Guess that the peak center is close to the average of the scanned angles weighted by their intensity.
     area0 = (max(scans(i).intMon)-bg0)*sqrt(pi/log(2))*fwhm0/2; % Guess that the area is given by its relation in terms of the assumed peak height and assumed standard deviation where the peak height is estimated as the largest observed intensity in the scan minus the guessed background.
-    scans(i).x0 = [bg0; area0; cent0]; % Starting point for fitting.
+    scans(i).x0 = [bg0, area0, cent0]; % Starting point for fitting.
     bglb = min(scans(i).intMon);
     bgub = max(scans(i).intMon);
     centerlb = scans(i).a3(8);
@@ -1302,7 +1302,7 @@ for i = 1:length(scans)
     box on
     axis square
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'CurveSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'CurveSPINS.png'])
     
     figure('Units', 'normalized', 'Position', [0.5, 0.1, 0.5, 0.8])
     for j = 1:length(scans(i).x0)
@@ -1337,7 +1337,7 @@ for i = 1:length(scans)
     title(['Gaussian Center: ', num2str(round(scans(i).xFit(3), 4)), '$\pm$', num2str(round(scans(i).xErr(3), 4))], 'Interpreter', 'LaTeX')
     xlabel('Gaussian Center (deg.)', 'Interpreter', 'LaTeX')
     hold off
-    saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'ErrorSPINS.png'])
+    %saveas(gcf,['C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\Figures\Eu5In2Sb6\Refinement\StructureFactors\fpx', num2str(scans(i).fileNum), 'ErrorSPINS.png'])
     pause(0.1)
 end
 
@@ -1347,7 +1347,7 @@ for i = 1:length(scans)
     [scans(i).R0,scans(i).M] = ResMat(scans(i).Q,scans(i).W,scans(i).Exp);
     [scans(i).f2,scans(i).f2Err] = structFact(scans(i).R0, scans(i).M, scans(i).xFit(2), scans(i).xErr(2), scans(i).Q);
 end
-save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\SPINSStrFct.mat') % Save the Workspace
+%save('C:\Users\Vincent Morano\OneDrive - Johns Hopkins University\Lab\MATLAB\MAT\Eu5In2Sb6\SPINSStrFct.mat') % Save the Workspace
 
 %% Save relevant numbers to output file for Mantid to generate absorption-corrected .int files.
 % Save to Excel workbook. Sort based on measurement set.
